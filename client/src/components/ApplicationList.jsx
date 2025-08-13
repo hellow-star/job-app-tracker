@@ -15,7 +15,7 @@ export default function ApplicationList({ apps, onUpdate, onDelete }) {
 
   if (!apps.length) {
     return <p className="text-gray-500">No applications yet. Add your first one!</p>;
-  }
+  } 
 
   return (
     <div className="space-y-3">

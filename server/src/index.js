@@ -7,6 +7,7 @@ import MongoStore from "connect-mongo";
 import { connectDB } from "./db.js";
 import authRouter from "./routes/auth.js";
 import appsRouter from "./routes/apps.js";
+import { notFound, errorHandler } from "./middleware/error.js";
 
 const app = express();
 
@@ -28,6 +29,8 @@ app.get("/health", (req, res) => res.json({ ok: true }));
 
 app.use("/auth", authRouter);
 app.use("/apps", appsRouter);
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`API running on :${PORT}`));

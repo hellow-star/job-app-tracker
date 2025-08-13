@@ -67,8 +67,8 @@ export default function ApplicationForm({ initial = null, onCancel, onSubmit }) 
 
       <div className="flex gap-2 justify-end">
         {onCancel && <button type="button" onClick={onCancel} className="px-3 py-2 rounded border">Cancel</button>}
-        <button disabled={busy} className="px-4 py-2 rounded bg-blue-600 text-white">
-          {busy ? "Saving..." : (initial ? "Update" : "Create")}
+        <button disabled={busy} aria-busy={busy} className="px-4 py-2 rounded bg-blue-600 text-white flex items-center gap-2">
+            {busy && <Spinner />} {initial ? "Update" : "Create"}
         </button>
       </div>
     </form>
