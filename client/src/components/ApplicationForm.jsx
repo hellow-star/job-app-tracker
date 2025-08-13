@@ -48,22 +48,27 @@ export default function ApplicationForm({ initial = null, onCancel, onSubmit }) 
   };
 
   return (
-    <form className="bg-white p-4 rounded-xl shadow space-y-3" onSubmit={handleSubmit}>
+    <form className="space-y-3" onSubmit={handleSubmit}>
       <h3 className="text-lg font-semibold">{initial ? "Edit Application" : "New Application"}</h3>
       {error && <p className="text-sm text-red-600">{error}</p>}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <input className="border p-2 rounded" placeholder="Company *" value={company} onChange={e=>setCompany(e.target.value)} />
+        <input autoFocus className="border p-2 rounded" placeholder="Company *" value={company} onChange={e=>setCompany(e.target.value)} />
         <input className="border p-2 rounded" placeholder="Role *" value={role} onChange={e=>setRole(e.target.value)} />
         <input className="border p-2 rounded" placeholder="Location" value={location} onChange={e=>setLocation(e.target.value)} />
         <input className="border p-2 rounded" placeholder="Job Link (URL)" value={link} onChange={e=>setLink(e.target.value)} />
         <select className="border p-2 rounded" value={status} onChange={e=>setStatus(e.target.value)}>
+        <input autoFocus className="w-full border p-2 rounded" placeholder="Company *" value={company} onChange={e=>setCompany(e.target.value)} />
+        <input className="w-full border p-2 rounded" placeholder="Role *" value={role} onChange={e=>setRole(e.target.value)} />
+        <input className="w-full border p-2 rounded" placeholder="Location" value={location} onChange={e=>setLocation(e.target.value)} />
+        <input className="w-full border p-2 rounded" placeholder="Job Link (URL)" value={link} onChange={e=>setLink(e.target.value)} />
+        <select className="w-full border p-2 rounded" value={status} onChange={e=>setStatus(e.target.value)}></select>
           {STATUS.map(s => <option key={s} value={s}>{s}</option>)}
         </select>
-        <input type="date" className="border p-2 rounded" value={dateApplied} onChange={e=>setDateApplied(e.target.value)} />
+        <input type="date" className="w-full border p-2 rounded" value={dateApplied} onChange={e=>setDateApplied(e.target.value)} />
       </div>
 
-      <textarea className="border p-2 rounded w-full" rows={3} placeholder="Notes" value={notes} onChange={e=>setNotes(e.target.value)} />
+      <textarea className="w-full border p-2 rounded" rows={3} placeholder="Notes" value={notes} onChange={e=>setNotes(e.target.value)} />
 
       <div className="flex gap-2 justify-end">
         {onCancel && <button type="button" onClick={onCancel} className="px-3 py-2 rounded border">Cancel</button>}
