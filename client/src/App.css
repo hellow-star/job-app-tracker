@@ -1,42 +1,172 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* App.css — page polish that respects your existing LoginPage.jsx + index.css tokens */
+
+/* ---------- 0) Base: stay in light theme by default ---------- */
+:root { color-scheme: light; }
+html, body, #root {
+  background: var(--bg, #fff);
+  color: var(--text, #0f172a);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Subtle background glow (very light) */
+body::before{
+  content:""; position:fixed; inset:-40vmax;
+  pointer-events:none; z-index:-1;
+  background:
+    radial-gradient(60vmax 40vmax at 100% 0%, rgba(79,70,229,.06), transparent 60%),
+    radial-gradient(45vmax 30vmax at 0% 100%, rgba(59,130,246,.07), transparent 60%);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* ---------- 1) Tailwind FALLBACKS (only a tiny subset you use on this page) ---------- */
+/* Layout + spacing */
+.mx-auto{ margin-left:auto; margin-right:auto; }
+.max-w-7xl{ max-width:80rem; }              /* 1280px */
+.px-6{ padding-left:1.5rem; padding-right:1.5rem; }
+.pt-32{ padding-top:8rem; }                 /* 128px */
+.pb-24{ padding-bottom:6rem; }              /* 96px */
+.grid{ display:grid; }
+.grid-cols-1{ grid-template-columns:1fr; }
+.gap-16{ gap:4rem; }
+.items-center{ align-items:center; }
+.flex{ display:flex; }
+.items-center{ align-items:center; }
+.gap-4{ gap:1rem; }
+.gap-8{ gap:2rem; }
+.h-16{ height:4rem; }
+.rounded-3xl{ border-radius:1.5rem; }
+
+/* Responsive fallbacks */
+@media (min-width:640px){ .sm\:px-8{ padding-left:2rem; padding-right:2rem; } }
+@media (min-width:768px){ .md\:flex{ display:flex; } }
+@media (min-width:1024px){ .lg\:grid-cols-2{ grid-template-columns:1fr 1fr; } }
+
+/* Text colors (used in your JSX) — gentle fallbacks */
+.text-slate-600{ color:#475569; }
+.text-slate-700{ color:#334155; }
+.text-slate-800{ color:#1f2937; }
+.text-slate-900{ color:#0f172a; }
+
+/* ---------- 2) Navbar (targets your exact classes) ---------- */
+nav.fixed.top-0{
+  position:fixed; inset-inline:0; top:0; z-index:40;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,.92);
+  border-bottom: 1px solid var(--border, #e2e8f0);
+  box-shadow: 0 2px 16px rgba(2,6,23,.06);
 }
-  
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+nav.fixed.top-0 > .mx-auto.max-w-7xl{
+  display:flex; align-items:center; justify-content:space-between;
+  height:64px;
 }
 
-.card {
-  padding: 2em;
+/* Ensure nav groups actually space out even if Tailwind gap misses */
+nav.fixed.top-0 .hidden.md\:flex{ display:none; }
+@media (min-width:768px){
+  nav.fixed.top-0 .hidden.md\:flex{ display:flex; align-items:center; gap:2rem; }
+}
+nav.fixed.top-0 .flex.items-center.gap-4{ display:flex; align-items:center; gap:1rem; }
+
+/* ---------- 3) Main container (layout if Tailwind grid didn’t apply) ---------- */
+main.mx-auto.max-w-7xl{
+  display:grid; grid-template-columns:1fr; gap:4rem; align-items:center;
+}
+@media (min-width:1024px){
+  main.mx-auto.max-w-7xl{ grid-template-columns:1fr 1fr; gap:4rem; }
 }
 
-.read-the-docs {
-  color: #888;
+/* ---------- 4) Hero copy ---------- */
+main section:first-child h1{
+  font-weight:800; letter-spacing:-0.01em;
+  font-size:clamp(2rem,3.5vw,3rem);
+  line-height:1.1; color:#0f172a;
 }
+main section:first-child p{ margin-top:1.25rem; color:#334155; font-size:1.1rem; line-height:1.7; }
+
+/* Feature list ticks */
+#features{ margin-top:2rem; display:grid; gap:1rem; color:#334155; }
+#features li{ display:flex; align-items:center; gap:.75rem; }
+#features li > span.inline-flex{
+  height:1.5rem; width:1.5rem; border-radius:12px;
+  border:1px solid #c7d2fe; background:#fff; box-shadow: 0 1px 0 rgba(2,6,23,.05);
+}
+
+/* “New here?” chip */
+#how-it-works .inline-flex{
+  display:inline-flex; align-items:center; gap:.5rem;
+}
+#how-it-works .inline-flex.rounded-xl{
+  border:1px solid var(--border, #e2e8f0);
+  background:#fff;
+  padding:.625rem 1rem;
+  border-radius:12px;
+  box-shadow: 0 6px 18px rgba(2,6,23,.06);
+}
+
+/* ---------- 5) Login card (targets your existing form classes) ---------- */
+form.bg-white\/90.backdrop-blur.rounded-3xl.shadow-xl.ring-1.ring-slate-200{
+  background:#fff;
+  border:1px solid var(--border, #e2e8f0);
+  border-radius:22px;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 24px 64px rgba(2,6,23,.10);
+  padding:2rem;    /* in case Tailwind p-8 didn’t apply */
+}
+@media (min-width:640px){
+  form.bg-white\/90.backdrop-blur.rounded-3xl.shadow-xl.ring-1.ring-slate-200{ padding:2.5rem; }
+}
+
+/* Headings in the card */
+form h2{ margin:0; font-weight:800; font-size:1.5rem; color:#0f172a; }
+form p{ color:#475569; }
+
+/* Inputs */
+input[type="email"], input[type="password"]{
+  width:100%; height:48px;
+  border:1px solid var(--border, #e2e8f0);
+  border-radius:14px;
+  padding:0 16px;
+  background:#fff; color:#0f172a;
+  transition: border-color .2s, box-shadow .2s, transform .05s;
+}
+input[type="email"]::placeholder, input[type="password"]::placeholder{ color:#64748b; }
+input[type="email"]:focus, input[type="password"]:focus{
+  outline:none; border-color:#bfc7fb;
+  box-shadow:0 0 0 4px rgba(165,180,252,.28); /* indigo-300 ring */
+}
+input[type="email"]:active, input[type="password"]:active{ transform:translateY(.5px); }
+
+/* Checkbox + "Forgot password?" row */
+form .flex.items-center.justify-between{ display:flex; align-items:center; justify-content:space-between; }
+input[type="checkbox"]{ width:1rem; height:1rem; border-radius:6px; }
+
+/* Submit button (your existing Tailwind combo) */
+button[type="submit"].bg-indigo-600{
+  display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
+  width:100%; height:48px;
+  border:1px solid rgba(79,70,229,.85);
+  border-radius:14px;
+  box-shadow: 0 12px 28px rgba(79,70,229,.25);
+  transition: transform .06s, box-shadow .2s, background .2s, border-color .2s, opacity .2s;
+}
+button[type="submit"].bg-indigo-600:hover{ box-shadow:0 16px 36px rgba(79,70,229,.32); }
+button[type="submit"].bg-indigo-600:active{ transform:translateY(1px); }
+button[type="submit"].group svg{ transition: transform .18s ease, opacity .18s ease; }
+button[type="submit"].group:hover svg{ transform: translateX(2px); }
+
+/* ---------- 6) Footer ---------- */
+footer.border-t{
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  background: rgba(255,255,255,.96);
+  border-top:1px solid var(--border, #e2e8f0);
+}
+footer .text-slate-600{ color:#475569; }
+
+/* ---------- 7) Small rhythm fixes ---------- */
+section .mt-6{ margin-top:1.25rem; }
+.mt-10{ margin-top:2.5rem; }
+.mb-8{ margin-bottom:2rem; }
+.mb-6{ margin-bottom:1.5rem; }
+.mb-5{ margin-bottom:1.25rem; }
+.mt-6.text-center{ margin-top:1.5rem; }
