@@ -1,172 +1,439 @@
-/* App.css — page polish that respects your existing LoginPage.jsx + index.css tokens */
+/* App.css — pixel-polish to match the mock, works with your existing LoginPage.jsx + index.css tokens */
 
-/* ---------- 0) Base: stay in light theme by default ---------- */
+/* ——— 0) Base: force light and add a soft background ——— */
 :root { color-scheme: light; }
-html, body, #root {
-  background: var(--bg, #fff);
-  color: var(--text, #0f172a);
-}
+html, body, #root { background: #f7f9fe; color: var(--text, #0f172a); }
 
-/* Subtle background glow (very light) */
-body::before{
-  content:""; position:fixed; inset:-40vmax;
-  pointer-events:none; z-index:-1;
+/* airy paper surface behind content */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
   background:
-    radial-gradient(60vmax 40vmax at 100% 0%, rgba(79,70,229,.06), transparent 60%),
-    radial-gradient(45vmax 30vmax at 0% 100%, rgba(59,130,246,.07), transparent 60%);
+    radial-gradient(1200px 700px at 15% 0%, rgba(99,102,241,.08), transparent 60%),
+    radial-gradient(900px 500px at 95% 100%, rgba(59,130,246,.07), transparent 55%),
+    linear-gradient(#f7f9fe, #f7f9fe);
 }
 
-/* ---------- 1) Tailwind FALLBACKS (only a tiny subset you use on this page) ---------- */
-/* Layout + spacing */
-.mx-auto{ margin-left:auto; margin-right:auto; }
-.max-w-7xl{ max-width:80rem; }              /* 1280px */
-.px-6{ padding-left:1.5rem; padding-right:1.5rem; }
-.pt-32{ padding-top:8rem; }                 /* 128px */
-.pb-24{ padding-bottom:6rem; }              /* 96px */
-.grid{ display:grid; }
-.grid-cols-1{ grid-template-columns:1fr; }
-.gap-16{ gap:4rem; }
-.items-center{ align-items:center; }
-.flex{ display:flex; }
-.items-center{ align-items:center; }
-.gap-4{ gap:1rem; }
-.gap-8{ gap:2rem; }
-.h-16{ height:4rem; }
-.rounded-3xl{ border-radius:1.5rem; }
+/* ——— 1) Top navbar (your existing nav) ——— */
+nav.fixed.top-0 {
+  position: fixed; inset-inline: 0; top: 0; z-index: 50;
+  background: rgba(255,255,255,.94);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #e6eaf2;
+  box-shadow: 0 8px 24px rgba(15,23,42,.06);
+}
+nav.fixed.top-0 > .mx-auto.max-w-7xl {
+  height: 68px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding-left: clamp(16px, 4vw, 32px);
+  padding-right: clamp(16px, 4vw, 32px);
+}
 
-/* Responsive fallbacks */
-@media (min-width:640px){ .sm\:px-8{ padding-left:2rem; padding-right:2rem; } }
-@media (min-width:768px){ .md\:flex{ display:flex; } }
-@media (min-width:1024px){ .lg\:grid-cols-2{ grid-template-columns:1fr 1fr; } }
+/* brand “Job Tracker” look */
+nav.fixed.top-0 a.flex.items-center.gap-2 {
+  font-weight: 800; letter-spacing: -.01em; color: #0f172a;
+}
+nav.fixed.top-0 .hidden.md\:flex { display: none; }
+@media (min-width: 768px) {
+  nav.fixed.top-0 .hidden.md\:flex {
+    display: flex; align-items: center; gap: 2.25rem;
+  }
+}
+nav.fixed.top-0 .flex.items-center.gap-4 { gap: 1rem; }
+nav.fixed.top-0 a { color: #0f172a; opacity: .8; text-decoration: none; }
+nav.fixed.top-0 a:hover { opacity: 1; }
 
-/* Text colors (used in your JSX) — gentle fallbacks */
-.text-slate-600{ color:#475569; }
-.text-slate-700{ color:#334155; }
-.text-slate-800{ color:#1f2937; }
-.text-slate-900{ color:#0f172a; }
+/* right “Sign in” chip */
+nav.fixed.top-0 a[href="/login"].hidden.sm\:inline-flex {
+  border-radius: 14px; border: 1px solid #d9e0ee;
+  background: #fff; box-shadow: 0 2px 10px rgba(2,6,23,.06);
+}
 
-/* ---------- 2) Navbar (targets your exact classes) ---------- */
-nav.fixed.top-0{
-  position:fixed; inset-inline:0; top:0; z-index:40;
+/* ——— 2) Main container ——— */
+main.mx-auto.max-w-7xl {
+  max-width: 1120px; /* a hair narrower like the mock */
+  padding-left: clamp(16px, 4vw, 32px);
+  padding-right: clamp(16px, 4vw, 32px);
+  padding-top: 120px; /* under the sticky nav */
+  padding-bottom: 48px;
+  display: grid; gap: 48px;
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+@media (min-width: 1024px) { /* lg */
+  main.mx-auto.max-w-7xl { grid-template-columns: 1.2fr .8fr; gap: 56px; }
+}
+
+/* ——— 3) Left: headline + intro + features ——— */
+section.max-w-xl.mx-auto.lg\:mx-0 h1 {
+  font-weight: 900; letter-spacing: -.015em;
+  color: #0f172a;
+  font-size: clamp(32px, 5vw, 56px);
+  line-height: 1.05;
+}
+section.max-w-xl.mx-auto.lg\:mx-0 p.mt-6 {
+  color: #334155; font-size: 18px; line-height: 1.7;
+  max-width: 48ch;
+}
+
+/* feature list with blue checks */
+#features { margin-top: 24px; display: grid; gap: 14px; color: #1f2937; }
+#features li { display: flex; align-items: center; gap: 12px; }
+#features li > span.inline-flex {
+  height: 22px; width: 22px; border-radius: 10px;
+  background: #fff; border: 1px solid #c7d2fe;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #1e40af; font-weight: 700;
+  box-shadow: 0 1px 0 rgba(15,23,42,.05);
+}
+
+/* “New here? Create an account” pill */
+#how-it-works .inline-flex.rounded-xl {
+  border: 1px solid #e6eaf2; background: #fff; color: #0f172a;
+  border-radius: 12px; padding: 10px 16px;
+  box-shadow: 0 8px 24px rgba(15,23,42,.06);
+}
+#how-it-works a { color: #1e40af; text-underline-offset: 3px; }
+
+/* ——— 4) Right: login card (target your exact form classes) ——— */
+.relative.mx-auto.w-full.max-w-md > .absolute.inset-0 {
+  /* soft backdrop glow behind the card */
+  background: linear-gradient(180deg, #ffffff, #eef2ff 80%);
+  filter: blur(20px); border-radius: 24px;
+}
+
+form.bg-white\/90.backdrop-blur.rounded-3xl.shadow-xl.ring-1.ring-slate-200 {
+  background: #ffffff;
+  border: 1px solid #e6eaf2;
+  border-radius: 20px;
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  background: rgba(255,255,255,.92);
-  border-bottom: 1px solid var(--border, #e2e8f0);
-  box-shadow: 0 2px 16px rgba(2,6,23,.06);
+  box-shadow: 0 30px 80px rgba(2,6,23,.10);
+  padding: 28px;
 }
-nav.fixed.top-0 > .mx-auto.max-w-7xl{
-  display:flex; align-items:center; justify-content:space-between;
-  height:64px;
-}
+@media (min-width: 640px) { form.bg-white\/90.backdrop-blur.rounded-3xl.shadow-xl.ring-1.ring-slate-200 { padding: 32px; } }
 
-/* Ensure nav groups actually space out even if Tailwind gap misses */
-nav.fixed.top-0 .hidden.md\:flex{ display:none; }
-@media (min-width:768px){
-  nav.fixed.top-0 .hidden.md\:flex{ display:flex; align-items:center; gap:2rem; }
-}
-nav.fixed.top-0 .flex.items-center.gap-4{ display:flex; align-items:center; gap:1rem; }
+form h2 { margin: 0; color: #0f172a; font-weight: 800; font-size: 28px; letter-spacing: -.01em; }
+form p { color: #475569; }
 
-/* ---------- 3) Main container (layout if Tailwind grid didn’t apply) ---------- */
-main.mx-auto.max-w-7xl{
-  display:grid; grid-template-columns:1fr; gap:4rem; align-items:center;
-}
-@media (min-width:1024px){
-  main.mx-auto.max-w-7xl{ grid-template-columns:1fr 1fr; gap:4rem; }
-}
-
-/* ---------- 4) Hero copy ---------- */
-main section:first-child h1{
-  font-weight:800; letter-spacing:-0.01em;
-  font-size:clamp(2rem,3.5vw,3rem);
-  line-height:1.1; color:#0f172a;
-}
-main section:first-child p{ margin-top:1.25rem; color:#334155; font-size:1.1rem; line-height:1.7; }
-
-/* Feature list ticks */
-#features{ margin-top:2rem; display:grid; gap:1rem; color:#334155; }
-#features li{ display:flex; align-items:center; gap:.75rem; }
-#features li > span.inline-flex{
-  height:1.5rem; width:1.5rem; border-radius:12px;
-  border:1px solid #c7d2fe; background:#fff; box-shadow: 0 1px 0 rgba(2,6,23,.05);
-}
-
-/* “New here?” chip */
-#how-it-works .inline-flex{
-  display:inline-flex; align-items:center; gap:.5rem;
-}
-#how-it-works .inline-flex.rounded-xl{
-  border:1px solid var(--border, #e2e8f0);
-  background:#fff;
-  padding:.625rem 1rem;
-  border-radius:12px;
-  box-shadow: 0 6px 18px rgba(2,6,23,.06);
-}
-
-/* ---------- 5) Login card (targets your existing form classes) ---------- */
-form.bg-white\/90.backdrop-blur.rounded-3xl.shadow-xl.ring-1.ring-slate-200{
-  background:#fff;
-  border:1px solid var(--border, #e2e8f0);
-  border-radius:22px;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  box-shadow: 0 24px 64px rgba(2,6,23,.10);
-  padding:2rem;    /* in case Tailwind p-8 didn’t apply */
-}
-@media (min-width:640px){
-  form.bg-white\/90.backdrop-blur.rounded-3xl.shadow-xl.ring-1.ring-slate-200{ padding:2.5rem; }
-}
-
-/* Headings in the card */
-form h2{ margin:0; font-weight:800; font-size:1.5rem; color:#0f172a; }
-form p{ color:#475569; }
-
-/* Inputs */
+/* inputs like the mock */
 input[type="email"], input[type="password"]{
-  width:100%; height:48px;
-  border:1px solid var(--border, #e2e8f0);
-  border-radius:14px;
-  padding:0 16px;
-  background:#fff; color:#0f172a;
-  transition: border-color .2s, box-shadow .2s, transform .05s;
+  width: 100%; height: 46px;
+  border: 1px solid #d9e0ee;
+  border-radius: 12px;
+  background: #fbfdff;
+  padding: 0 14px;
+  font-size: 15px; color: #0f172a;
+  transition: border-color .2s, box-shadow .2s, background .2s;
 }
-input[type="email"]::placeholder, input[type="password"]::placeholder{ color:#64748b; }
-input[type="email"]:focus, input[type="password"]:focus{
-  outline:none; border-color:#bfc7fb;
-  box-shadow:0 0 0 4px rgba(165,180,252,.28); /* indigo-300 ring */
+input[type="email"]::placeholder, input[type="password"]::placeholder { color: #94a3b8; }
+input[type="email"]:focus, input[type="password"]:focus {
+  outline: none;
+  border-color: #b8c2ff;
+  box-shadow: 0 0 0 4px rgba(165,180,252,.25);
+  background: #fff;
 }
-input[type="email"]:active, input[type="password"]:active{ transform:translateY(.5px); }
 
-/* Checkbox + "Forgot password?" row */
-form .flex.items-center.justify-between{ display:flex; align-items:center; justify-content:space-between; }
-input[type="checkbox"]{ width:1rem; height:1rem; border-radius:6px; }
+/* remember/forgot row */
+form .flex.items-center.justify-between { display: flex; align-items: center; justify-content: space-between; }
+input[type="checkbox"]{ width: 16px; height: 16px; border-radius: 4px; border: 1px solid #cbd5e1; }
+a[href="/forgot"]{ color: #4256ff; text-decoration: none; }
+a[href="/forgot"]:hover{ text-decoration: underline; }
 
-/* Submit button (your existing Tailwind combo) */
+/* primary “Sign in” button */
 button[type="submit"].bg-indigo-600{
-  display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
-  width:100%; height:48px;
-  border:1px solid rgba(79,70,229,.85);
-  border-radius:14px;
-  box-shadow: 0 12px 28px rgba(79,70,229,.25);
-  transition: transform .06s, box-shadow .2s, background .2s, border-color .2s, opacity .2s;
+  height: 48px; width: 100%;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #3b82f6, #4256ff);
+  border: 1px solid #3f51ff;
+  color: #fff; font-weight: 700;
+  box-shadow: 0 16px 36px rgba(63,81,255,.28);
+  transition: transform .06s, box-shadow .2s, filter .2s;
 }
-button[type="submit"].bg-indigo-600:hover{ box-shadow:0 16px 36px rgba(79,70,229,.32); }
-button[type="submit"].bg-indigo-600:active{ transform:translateY(1px); }
-button[type="submit"].group svg{ transition: transform .18s ease, opacity .18s ease; }
+button[type="submit"].bg-indigo-600:hover{
+  filter: brightness(1.03);
+  box-shadow: 0 20px 44px rgba(63,81,255,.34);
+}
+button[type="submit"].bg-indigo-600:active{ transform: translateY(1px); }
+button[type="submit"].group svg{
+  transition: transform .18s ease, opacity .18s ease;
+}
 button[type="submit"].group:hover svg{ transform: translateX(2px); }
 
-/* ---------- 6) Footer ---------- */
-footer.border-t{
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-  background: rgba(255,255,255,.96);
-  border-top:1px solid var(--border, #e2e8f0);
-}
-footer .text-slate-600{ color:#475569; }
+/* “Don’t have an account? Sign up” */
+form p.text-center a { color: #4256ff; text-underline-offset: 3px; }
+form p.text-center a:hover { text-decoration: underline; }
 
-/* ---------- 7) Small rhythm fixes ---------- */
-section .mt-6{ margin-top:1.25rem; }
-.mt-10{ margin-top:2.5rem; }
-.mb-8{ margin-bottom:2rem; }
-.mb-6{ margin-bottom:1.5rem; }
-.mb-5{ margin-bottom:1.25rem; }
-.mt-6.text-center{ margin-top:1.5rem; }
+/* ——— 5) Footer ——— */
+footer.border-t {
+  background: rgba(255,255,255,.96);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid #e6eaf2;
+}
+footer .text-slate-600 { color: #475569; }
+footer .mx-auto.max-w-7xl {
+  max-width: 1120px;
+  padding-left: clamp(16px, 4vw, 32px);
+  padding-right: clamp(16px, 4vw, 32px);
+}
+
+/* ——— 6) Small rhythm helpers (for safety if Tailwind utilities miss) ——— */
+.mt-6 { margin-top: 1.25rem; }
+.mt-10 { margin-top: 2.5rem; }
+.mb-8 { margin-bottom: 2rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.mb-5 { margin-bottom: 1.25rem; }
+
+/* ===== PATCH: hero artwork + layout tuning to match the mock ===== */
+
+/* 1) Page background artwork (soft blobs + subtle right curve) */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -2;
+}
+
+/* soft blobs */
+body::before {
+  background:
+    radial-gradient(1200px 700px at 12% 0%, rgba(99,102,241,0.10), transparent 60%),
+    radial-gradient(900px 520px at 88% 86%, rgba(59,130,246,0.09), transparent 55%),
+    linear-gradient(#f7f9fe, #f7f9fe);
+  filter: saturate(1.05);
+}
+
+  body::after {
+    z-index: -1;
+    mask: linear-gradient(180deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+    background:
+      /* The '#' in fill='url(#g)' is now properly encoded to '%23' */
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1100 1200' preserveAspectRatio='xMidYMid slice'><defs><linearGradient id='g' x1='0' x2='0' y1='0' y2='1'><stop offset='0%' stop-color='rgba(76,110,245,0.18)'/><stop offset='100%' stop-color='rgba(76,110,245,0.00)'/></linearGradient></defs><path d='M1100 0 C900 120 820 260 820 420 C820 650 1080 720 1100 880 L1100 1200 L0 1200 L0 0 Z' fill='url(%23g)'/></svg>") right center / 780px 100% no-repeat;
+    opacity: .85;
+  }
+
+    /* 2) Navbar spacing & polish */
+    nav.fixed.top-0 > .mx-auto.max-w-7xl {
+      max-width: 1160px;
+      padding-left: clamp(20px, 4vw, 36px);
+      padding-right: clamp(20px, 4vw, 36px);
+    }
+    nav.fixed.top-0 .hidden.md\:flex a { font-weight: 600; letter-spacing: .005em; }
+
+    /* 3) Main layout: tighter grid and consistent gutters */
+    main.mx-auto.max-w-7xl {
+      max-width: 1160px;
+      grid-template-columns: 1.1fr .9fr;   /* left copy a bit wider */
+      gap: 64px;
+      padding-left: clamp(20px, 4vw, 36px);
+      padding-right: clamp(20px, 4vw, 36px);
+    }
+
+    /* 4) Headline sizing & tracking to match mock */
+    section.max-w-xl.mx-auto.lg\:mx-0 h1 {
+      font-size: clamp(40px, 5.6vw, 64px);
+      line-height: 1.02;
+      letter-spacing: -0.018em;
+      margin-top: 8px;
+    }
+
+    /* 5) Features list: blue tick look */
+    #features li > span.inline-flex {
+      height: 22px; width: 22px; border-radius: 999px;
+      border: 1px solid #c7d2fe;
+      background: #fff;
+      box-shadow: 0 1px 0 rgba(15,23,42,.05);
+      color: #1e40af;
+    }
+
+    /* 6) “New here?” pill sized like mock */
+    #how-it-works .inline-flex.rounded-xl {
+      padding: 12px 16px;
+      border-radius: 14px;
+    }
+
+    /* 7) Login card: stronger ambient shadow + subtle bevel */
+    .relative.mx-auto.w-full.max-w-md { position: relative; }
+    .relative.mx-auto.w-full.max-w-md::after {
+      content: "";
+      position: absolute; left: 50%; transform: translateX(-50%);
+      bottom: -34px; width: 86%; height: 120px;
+      background: radial-gradient(60% 80% at 50% 0%, rgba(17,24,39,.12), transparent 70%);
+      filter: blur(6px);
+      z-index: -1;
+    }
+
+    /* card itself */
+    form.bg-white\/90.backdrop-blur.rounded-3xl.shadow-xl.ring-1.ring-slate-200 {
+      border-radius: 16px;
+      box-shadow:
+        0 18px 60px rgba(2,6,23,.12),
+        0 1px 0 rgba(255,255,255,.6) inset;  /* soft bevel */
+    }
+
+    /* 8) Inputs: tighter radii & clearer borders */
+    input[type="email"], input[type="password"] {
+      border-color: #d7ddef;
+      border-radius: 12px;
+      background: #fbfdff;
+    }
+    input[type="email"]:focus, input[type="password"]:focus {
+      border-color: #b7c3ff;
+      box-shadow: 0 0 0 4px rgba(165,180,252,.24);
+      background: #fff;
+    }
+
+    /* 9) Primary button gradient & depth (blue to indigo) */
+    button[type="submit"].bg-indigo-600{
+      background: linear-gradient(180deg, #4f8bff 0%, #4256ff 100%);
+      border-color: #4256ff;
+      box-shadow: 0 20px 46px rgba(66,86,255,.32);
+    }
+    button[type="submit"].bg-indigo-600:hover{
+      filter: brightness(1.04);
+      box-shadow: 0 24px 56px rgba(66,86,255,.36);
+    }
+
+    /* 10) Footer separation like mock */
+    footer.border-t {
+      background: rgba(255,255,255,.96);
+      border-top: 1px solid #e6eaf2;
+      box-shadow: 0 -6px 24px rgba(15,23,42,.04) inset;
+    }
+
+
+    /* === PATCH: make the hero use the full page width/height === */
+
+/* 1) Main uses full width (no max-width clamp) */
+main.mx-auto.max-w-7xl{
+  max-width: none;      /* remove the 1120/1160 clamp */
+  width: 100%;
+  /* generous gutters that scale with viewport */
+  padding-left: clamp(24px, 6vw, 72px);
+  padding-right: clamp(24px, 6vw, 72px);
+
+  /* fill vertical space beneath sticky nav (68px) */
+  min-height: calc(100svh - 68px);
+  align-items: center;   /* vertically center content within the hero */
+  /* wider two-column proportions so the layout breathes on ultra-wide screens */
+  grid-template-columns: minmax(320px, 1.15fr) minmax(380px, 0.85fr);
+  gap: clamp(40px, 6vw, 80px);
+}
+
+/* 2) Keep the login card visually on the right; center on smaller screens */
+.relative.mx-auto.w-full.max-w-md{
+  justify-self: end;
+}
+@media (max-width: 1024px){
+  .relative.mx-auto.w-full.max-w-md{ justify-self: center; }
+}
+
+/* 3) Keep hero copy readable while allowing the section to be full width */
+section.max-w-xl.mx-auto.lg\:mx-0{
+  max-width: 62ch;      /* readable line length for the paragraph */
+}
+
+/* 4) Ensure the background artwork fills the whole page under the full-width hero */
+body::before, body::after{
+  left: 0; right: 0; top: 0; bottom: 0; /* already full screen, but re-assert */
+  background-attachment: fixed;         /* anchors the blobs as the layout widens */
+}
+
+/* 5) Footer stays full width, with matching gutters */
+footer .mx-auto.max-w-7xl{
+  max-width: none;
+  width: 100%;
+  padding-left: clamp(24px, 6vw, 72px);
+  padding-right: clamp(24px, 6vw, 72px);
+}
+
+/* Footer */
+footer {
+  background: rgba(255,255,255,.96);
+  border-top: 1px solid #e6eaf2;
+  box-shadow: 0 -6px 24px rgba(15,23,42,.04) inset;
+  padding-top: 1rem;
+}
+
+/* === FULL-WIDTH NAV, MAIN, AND FOOTER — matches your JSX === */
+
+/* NAV (your <nav>…>) */
+nav.fixed.top-0 { left: 0; right: 0; width: 100%; } /* ensure edge-to-edge */
+nav.fixed.top-0 > .mx-auto.max-w-7xl {
+  max-width: none !important;
+  width: 100% !important;
+  padding-left: clamp(24px, 6vw, 72px) !important;
+  padding-right: clamp(24px, 6vw, 72px) !important;
+}
+
+/* MAIN (your <main class="mx-auto max-w-7xl …">) */
+main.mx-auto.max-w-7xl{
+  max-width: none !important;
+  width: 100% !important;
+  padding-left: clamp(24px, 6vw, 72px) !important;
+  padding-right: clamp(24px, 6vw, 72px) !important;
+  /* make the hero fill the width nicely */
+  grid-template-columns: minmax(320px, 1.2fr) minmax(380px, 0.8fr);
+  gap: clamp(40px, 6vw, 80px);
+  min-height: calc(100svh - 68px); /* under the sticky nav */
+  align-items: center;
+}
+/* collapse to one column on smaller screens */
+@media (max-width: 1024px){
+  main.mx-auto.max-w-7xl{ grid-template-columns: 1fr; }
+}
+
+/* keep the login card to the right on desktop */
+.relative.mx-auto.w-full.max-w-md{ justify-self: end; }
+@media (max-width: 1024px){
+  .relative.mx-auto.w-full.max-w-md{ justify-self: center; }
+}
+
+/* FOOTER (your <footer id="faq"> … ) */
+footer#faq { width: 100%; }
+footer#faq > .mx-auto.max-w-7xl{
+  max-width: none !important;
+  width: 100% !important;
+  padding-left: clamp(24px, 6vw, 72px) !important;
+  padding-right: clamp(24px, 6vw, 72px) !important;
+}
+
+
+/* === Decorative right arrow under the login card === */
+/* Targets your existing wrapper: <section><div class="relative mx-auto w-full max-w-md">… */
+.relative.mx-auto.w-full.max-w-md { position: relative; }
+
+/* Ambient glow stays lowest */
+.relative.mx-auto.w-full.max-w-md::after{
+  /* if you already have ::after for the glow, keep it;
+     otherwise this keeps it behind the arrow */
+  z-index: -2;
+}
+
+/* Keep the sign-in label and arrow on one line, centered */
+button[type="submit"].bg-indigo-600 {
+  display: inline-flex;               /* ensure flex layout even if Tailwind misses */
+  align-items: center;                /* vertical centering */
+  justify-content: center;            /* horizontal centering */
+  gap: 0.5rem;                        /* space between text and icon */
+  line-height: 1;                     /* prevent tall line-height from pushing the icon down */
+  white-space: nowrap;                /* avoid wrapping icon to the next line */
+}
+
+/* Normalize the SVG so it sits perfectly beside the text */
+button[type="submit"].bg-indigo-600 svg {
+  display: inline-block;              /* avoid any block-level resets */
+  height: 2rem;                       /* same as Tailwind h-4 */
+  width: 2rem;                        /* same as Tailwind w-4 */
+  vertical-align: middle;             /* align with text middle */
+  transform: translateY(0);           /* cancel any inherited offsets */
+}
+
+/* Keep your hover nudge working even if Tailwind group styles don't apply */
+button[type="submit"].bg-indigo-600:hover svg {
+  transform: translateX(2px);
+  transition: transform .18s ease;
+}

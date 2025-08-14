@@ -194,7 +194,13 @@ export default function LoginPage() {
                   whileTap={{ scale: 0.98 }}
                 >
                   <span>{loading ? "Signing in..." : "Sign in"}</span>
-                  <svg className="h-4 w-4 opacity-80 group-hover:translate-x-0.5 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <svg
+                    className="h-4 w-4 opacity-80 group-hover:translate-x-0.5 transition-transform "
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
                     <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
                 </motion.button>
